@@ -21,6 +21,8 @@ public class Test {
 		
 		escenario.setTamanio(tamanio);
 		
+		escenario.iniciar();
+		
 	}
 
 }

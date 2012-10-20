@@ -1,5 +1,11 @@
 package elementos;
 
+import java.awt.Rectangle;
+
+/**
+ * @author matiasiglesias
+ *
+ */
 public abstract class Elemento {
 	private Posicion posicion;
 	private Tamanio tamanio;
@@ -36,8 +42,14 @@ public abstract class Elemento {
 		this.tamanio = tamanio;
 	}
 
-	public void chocar(Elemento otro) {
+	/*
+	 * Devuelve true si el elemento this choca con el Elemento otro y false si no lo hace
+	 */
+	public boolean chocar(Elemento otro) {
+		Rectangle esteRectangulo = new Rectangle(this.getPosicion().getX(), this.getPosicion().getY(), this.getTamanio().getAncho(), this.getTamanio().getAlto());
+		Rectangle otroRectangulo = new Rectangle(otro.getPosicion().getX(), otro.getPosicion().getY(), otro.getTamanio().getAncho(), otro.getTamanio().getAlto());
 		
+		return esteRectangulo.intersects(otroRectangulo);
 	}
 	
 	public String toString() {

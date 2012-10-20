@@ -15,7 +15,7 @@ public abstract class Movible extends Elemento {
 		// TODO Auto-generated method stub
 		super.jugar();
 		this.avanzar();
-		System.out.println(this);
+		//System.out.println(this);
 	}
 
 	public int getVelocidad() {
@@ -39,12 +39,13 @@ public abstract class Movible extends Elemento {
 	}
 	
 	public void avanzar() {
-		Posicion posicion = new Posicion();
-		posicion = this.getPosicion();
+		Posicion posicion = new Posicion(this.getPosicion().getX(), this.getPosicion().getY());
 		
-		posicion.setX(posicion.getX() + Trigonometria.coseno(this.getDireccion(), this.getVelocidad()));
-		posicion.setY(posicion.getY() + Trigonometria.seno(this.getDireccion(), this.getVelocidad()));
-		
+		//posicion.setX(posicion.getX() + Trigonometria.coseno(this.getDireccion(), this.getVelocidad()));
+		//posicion.setY(posicion.getY() + Trigonometria.seno(this.getDireccion(), this.getVelocidad()));
+		posicion.setX(posicion.getX() + Trigonometria.coseno(this.getDireccion()) * this.getVelocidad());
+		posicion.setY(posicion.getY() + Trigonometria.seno(this.getDireccion()) * this.getVelocidad());
+
 		this.setPosicion(posicion);
 		
 	}

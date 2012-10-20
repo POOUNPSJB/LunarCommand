@@ -49,6 +49,7 @@ public class Escenario {
 		navenodriza.setPosicion(new Posicion(configuracion.getEscenario_ancho()/2, 0));
 		navenodriza.setVelocidad(configuracion.getVelocidad_elementos());
 		navenodriza.setDireccion(0); //Por defecto mueve para la derecha
+		navenodriza.setEscenario(this);
 		return navenodriza;
 	}
 	
@@ -72,24 +73,27 @@ public class Escenario {
 		return !(posicion.getX() >= configuracion.getEscenario_ancho() || posicion.getY() > configuracion.getEscenario_alto() || posicion.getX() <= 0 || posicion.getY() < 0);
 	}
 	
+	public void addElemento(Elemento elemento) {
+		this.elementos.add(elemento);
+	}
 	public void iniciar() {
 		
 		//Creo los objetos
 		System.out.println("Inicio del Juego");
 		//Agrego Base Lunar Armada
-		this.elementos.add(crearBaseLunarArmada());
+		this.addElemento(crearBaseLunarArmada());
 
 		//Agrego las otras Bases Lunares
 		int i;
 		for (i=1; i<=configuracion.getCantidad_baseslunares(); i++)
-			this.elementos.add(crearBaseLunar(i, configuracion.getCantidad_baseslunares()));
+			this.addElemento(crearBaseLunar(i, configuracion.getCantidad_baseslunares()));
 		
 		//Agrego la Nave Nodriza
-		this.elementos.add(crearNaveNodriza());
+		this.addElemento(crearNaveNodriza());
 		
 		//Pongo a jugar a los elementos
 		//while (true) {
-		for (i = 1; i <= 50; i++) {
+		for (i = 1; i <= 5; i++) {
 			for (Elemento e: elementos) 
 				e.jugar();
 			

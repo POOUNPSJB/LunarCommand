@@ -11,6 +11,7 @@ public class NaveNodriza extends Movible {
 	private Configuracion configuracion;
 	public  ArrayList <Misil> misiles;
 	public  ArrayList <Cohete> cohetes;
+	private Escenario escenario;
 	
 	@Override
 	public void jugar() {
@@ -37,7 +38,7 @@ public class NaveNodriza extends Movible {
 		misil.setPosicion(this.getPosicion());
 		misil.setVelocidad(configuracion.getVelocidad_misil());
 		misil.setDanio(configuracion.getDanio_misil());
-		misiles.add(misil);
+		this.escenario.addElemento(misil);
 		
 		System.out.println("Disparo Misil");
 		
@@ -48,12 +49,17 @@ public class NaveNodriza extends Movible {
 		
 		cohete.setPosicion(this.getPosicion());
 		cohete.setVelocidad(configuracion.getVelocidad_cohete());
-		cohetes.add(cohete);
+		escenario.addElemento(cohete);
 		
 		System.out.println("Disparo Cohete");
 	}
 	
 	
+
+	public void setEscenario(Escenario escenario) {
+		this.escenario = escenario;
+	}
+
 	@Override
 	public void chocarPared() {
 		// TODO Auto-generated method stub
