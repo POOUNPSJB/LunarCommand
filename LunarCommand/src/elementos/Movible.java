@@ -1,5 +1,7 @@
 package elementos;
 
+import configuracion.Configuracion;
+
 public abstract class Movible extends Elemento {
 	private int velocidad;
 	private int direccion;
@@ -7,6 +9,7 @@ public abstract class Movible extends Elemento {
 	public Movible() {
 		// TODO Auto-generated constructor stub
 		super();
+		this.setVelocidad(Configuracion.getVelocidad_elementos()); //Velocidad por defecto
 		this.setDireccion(0);
 	}
 
@@ -51,12 +54,12 @@ public abstract class Movible extends Elemento {
 	}
 		
 	public String toString() {
-		return "Elemento Clase:" + this.getClass().toString() + " Posicion: " + this.getPosicion().getX() + ", " + this.getPosicion().getY() + " - Direccion: " + this.getDireccion();
+		return "Elemento Clase:" + this.getClass().toString() + " ID: " + this.getId() + " Posicion: " + this.getPosicion().getX() + ", " + this.getPosicion().getY() + " - Direccion: " + this.getDireccion();
 	}
 
 	
 	public void chocarPared() {
-		System.out.println("chocarPared");
+		System.out.println("Elemento " + this.getClass() + " chocarPared");
 	}
 	/**
 	 * @param args

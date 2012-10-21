@@ -1,16 +1,15 @@
 package elementos;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import configuracion.Configuracion;
 
 public class Escenario {
-	private ArrayList <Elemento> elementos;
-	private Configuracion configuracion = new Configuracion();
+	private CopyOnWriteArrayList <Elemento> elementos;
 	
 	public Escenario() {
 		// TODO Auto-generated constructor stub
-		this.elementos = new ArrayList <Elemento>();
+		this.elementos = new CopyOnWriteArrayList <Elemento>();
 	}
 	private Tamanio tamanio;
 
@@ -25,7 +24,9 @@ public class Escenario {
 	 */
 	private int getPosicionXBaseLunar(int nroBase, int totalBases) {
 		int x;
-		x = configuracion.getEscenario_ancho() / totalBases * (nroBase);
+		if (nroBase > totalBases / 2)
+			nroBase++;
+		x = Configuracion.getEscenario_ancho() / (totalBases + 1) * nroBase;
 		return x;
 	}
 
@@ -36,8 +37,8 @@ public class Escenario {
 	 */
 	private BaseLunar crearBaseLunar(int nroBase, int totalBases) {
 		
-		BaseLunar baselunar = new BaseLunar(getPosicionXBaseLunar(nroBase, totalBases), configuracion.getEscenario_alto());
-		
+		BaseLunar baselunar = new BaseLunar(getPosicionXBaseLunar(nroBase, totalBases), Configuracion.getEscenario_alto());
+		baselunar.setTamanio(new Tamanio(Configuracion.getBaseLunar_tamanio_alto(), Configuracion.getBaseLunar_tamanio_ancho()));
 		return baselunar;
 	}
 	
@@ -45,11 +46,11 @@ public class Escenario {
 	 * Crea un objeto Nave Nodriza
 	 */
 	private NaveNodriza crearNaveNodriza() {
-		NaveNodriza navenodriza = new NaveNodriza();
-		navenodriza.setPosicion(new Posicion(configuracion.getEscenario_ancho()/2, 0));
-		navenodriza.setVelocidad(configuracion.getVelocidad_elementos());
+		NaveNodriza navenodriza = new NaveNodriza(this);
+		navenodriza.setPosicion(new Posicion(Configuracion.getEscenario_ancho()/2, 0));
+		navenodriza.setVelocidad(Configuracion.getVelocidad_elementos());
 		navenodriza.setDireccion(0); //Por defecto mueve para la derecha
-		navenodriza.setEscenario(this);
+		navenodriza.setTamanio(new Tamanio(Configuracion.getNaveNodriza_tamanio_ancho(), Configuracion.getNaveNodriza_tamanio_alto()));
 		return navenodriza;
 	}
 	
@@ -61,16 +62,20 @@ public class Escenario {
 		BaseLunarArmada baselunararmada;
 		baselunararmada = new BaseLunarArmada();
 		
-		posicion.setX(configuracion.getEscenario_ancho()/2);
-		posicion.setY(configuracion.getEscenario_alto());
-		baselunararmada.setCantidadBombas(configuracion.getCantidad_bombas());
-		baselunararmada.laser.setRadioExplosion(configuracion.getRadio_destruccion_laser());
+		posicion.setX(Configuracion.getEscenario_ancho()/2);
+		posicion.setY(Configuracion.getEscenario_alto());
+		baselunararmada.setPosicion(posicion);
+		baselunararmada.setCantidadBombas(Configuracion.getCantidad_bombas());
+		baselunararmada.laser.setRadioExplosion(Configuracion.getRadio_destruccion_laser());
+		
+		baselunararmada.setTamanio(new Tamanio(Configuracion.getBaseLunarArmada_tamanio_alto(), Configuracion.getBaseLunarArmada_tamanio_ancho()));
+
 		
 		return baselunararmada;
 	}
 	
 	private boolean posicionValida(Posicion posicion) {
-		return !(posicion.getX() >= configuracion.getEscenario_ancho() || posicion.getY() > configuracion.getEscenario_alto() || posicion.getX() <= 0 || posicion.getY() < 0);
+		return !(posicion.getX() >= Configuracion.getEscenario_ancho() || posicion.getY() > Configuracion.getEscenario_alto() || posicion.getX() <= 0 || posicion.getY() < 0);
 	}
 	
 	public void addElemento(Elemento elemento) {
@@ -85,27 +90,51 @@ public class Escenario {
 
 		//Agrego las otras Bases Lunares
 		int i;
-		for (i=1; i<=configuracion.getCantidad_baseslunares(); i++)
-			this.addElemento(crearBaseLunar(i, configuracion.getCantidad_baseslunares()));
+		for (i=1; i<=Configuracion.getCantidad_baseslunares(); i++)
+			this.addElemento(crearBaseLunar(i, Configuracion.getCantidad_baseslunares()));
 		
 		//Agrego la Nave Nodriza
 		this.addElemento(crearNaveNodriza());
 		
 		//Pongo a jugar a los elementos
 		//while (true) {
-		for (i = 1; i <= 5; i++) {
-			for (Elemento e: elementos) 
+		for (i = 1; i <= 10; i++) {
+			for (Elemento e: elementos) {
 				e.jugar();
+			}
 			
-			//Termino la ronda
+			//System.out.println("Termino la ronda");
 			
 			//Me fijo si alguno de los elementos movibles se fue de la pantalla
 			for (Elemento e: elementos) {
 				if (e instanceof Movible) {
-					if (! posicionValida(e.getPosicion()))
+					if (! posicionValida(e.getPosicion())) {
 						((Movible) e).chocarPared();
+						
+						if (e instanceof Misil) {
+							e.morir();
+							elementos.remove(e);
+						}
+						if (e instanceof Cohete) {
+							e.morir();
+							elementos.remove(e);
+						}
+					}
 				}
 			}
+			
+			//Me fijo si alguno de los elementos choc— con otro
+			
+			for (Elemento e1: elementos) {
+				for (Elemento e2: elementos) {
+					if ((e1 != e2) && (e2 instanceof Movible)) { //Me fijo que un elemento no controle choque consigo mismo y solo con objetos movibles
+						if (e1.chocar(e2)) {
+							System.out.println("Elemento " + e1 + " choc— con " + e2);
+						}
+					}
+				}
+			}
+			
 		}
 		
 	}

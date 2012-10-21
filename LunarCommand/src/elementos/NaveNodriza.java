@@ -1,16 +1,11 @@
 package elementos;
 
-import java.util.ArrayList;
-
 import configuracion.Configuracion;
 
 public class NaveNodriza extends Movible {
 	private int frecuenciaDisparoCohete = 7;
 	private int frecuenciaDisparoMisil = 5;
 	private int turnoActual = 0;
-	private Configuracion configuracion;
-	public  ArrayList <Misil> misiles;
-	public  ArrayList <Cohete> cohetes;
 	private Escenario escenario;
 	
 	@Override
@@ -21,26 +16,26 @@ public class NaveNodriza extends Movible {
 		if ((turnoActual % frecuenciaDisparoCohete) == 0)
 			this.dispararCohete();
 		if ((turnoActual % frecuenciaDisparoMisil) == 0)
-			this.dispararMisil();			
+			this.dispararMisil();	
 	}
-
-	public NaveNodriza() {
-		// TODO Auto-generated constructor stub
+	
+	public NaveNodriza(Escenario escenario) {
 		super();
-		configuracion = new Configuracion();
-		misiles = new ArrayList <Misil>();
-		cohetes = new ArrayList <Cohete>();
+		this.escenario = escenario;
 	}
 
 	public void dispararMisil() {
 		Misil misil = new Misil();
 		
 		misil.setPosicion(this.getPosicion());
-		misil.setVelocidad(configuracion.getVelocidad_misil());
-		misil.setDanio(configuracion.getDanio_misil());
+		misil.avanzar();
+		misil.setVelocidad(Configuracion.getVelocidad_misil());
+		misil.setDanio(Configuracion.getDanio_misil());
+		misil.setTamanio(new Tamanio(Configuracion.getMisil_tamanio_ancho(), Configuracion.getMisil_tamanio_ancho()));
 		this.escenario.addElemento(misil);
 		
 		System.out.println("Disparo Misil");
+
 		
 	}
 	
@@ -48,17 +43,14 @@ public class NaveNodriza extends Movible {
 		Cohete cohete = new Cohete();
 		
 		cohete.setPosicion(this.getPosicion());
-		cohete.setVelocidad(configuracion.getVelocidad_cohete());
+		cohete.avanzar();
+		cohete.setVelocidad(Configuracion.getVelocidad_cohete());
+		cohete.setTamanio(new Tamanio(Configuracion.getCohete_tamanio_ancho(), Configuracion.getCohete_tamanio_ancho()));
 		escenario.addElemento(cohete);
 		
 		System.out.println("Disparo Cohete");
 	}
 	
-	
-
-	public void setEscenario(Escenario escenario) {
-		this.escenario = escenario;
-	}
 
 	@Override
 	public void chocarPared() {
