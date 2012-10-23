@@ -22,7 +22,7 @@ public abstract class Elemento {
 	}
 
 	public void jugar() {
-		System.out.printf("Juega el objeto " + this + " (%d,%d)\n", this.getPosicion().getX(), this.getPosicion().getY());
+		if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.printf("Juega el objeto " + this + " (%d,%d)\n", this.getPosicion().getX(), this.getPosicion().getY());
 	}
 	
 	public void morir() {
@@ -63,7 +63,7 @@ public abstract class Elemento {
 	 * Devuelve true si el elemento this choca con el Elemento otro y false si no lo hace
 	 */
 	public boolean chocar(Elemento otro) {
-	 	if (Configuracion.isModo_debug()) System.out.printf("Rutina chocar elemento " + this.getClass() + " (%d,%d,%d,%d) con elemento " + otro.getClass() + " (%d,%d,%d,%d) \n", this.getPosicion().getX(), this.getPosicion().getY(), this.getTamanio().getAncho(), this.getTamanio().getAlto(), otro.getPosicion().getX(), otro.getPosicion().getY(), otro.getTamanio().getAncho(), otro.getTamanio().getAlto());
+	 	if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.printf("Rutina chocar elemento " + this.getClass() + " (%d,%d,%d,%d) con elemento " + otro.getClass() + " (%d,%d,%d,%d) \n", this.getPosicion().getX(), this.getPosicion().getY(), this.getTamanio().getAncho(), this.getTamanio().getAlto(), otro.getPosicion().getX(), otro.getPosicion().getY(), otro.getTamanio().getAncho(), otro.getTamanio().getAlto());
 		Rectangle esteRectangulo = new Rectangle(this.getPosicion().getX(), this.getPosicion().getY(), this.getTamanio().getAncho(), this.getTamanio().getAlto());
 		Rectangle otroRectangulo = new Rectangle(otro.getPosicion().getX(), otro.getPosicion().getY(), otro.getTamanio().getAncho(), otro.getTamanio().getAlto());
 		

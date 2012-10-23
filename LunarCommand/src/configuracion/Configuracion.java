@@ -22,11 +22,15 @@ public class Configuracion {
 	private final static int cohete_velocidad = 8;
 	private final static int cohete_tamanio_alto = 5;
 	private final static int cohete_tamanio_ancho = 5;
-	private final static boolean modo_debug = false;
 	
 	
-	public static boolean isModo_debug() {
-		return modo_debug;
+	public enum ShowLogType {ShowLogDebug, ShowLogResume, ShowLogNone};
+	
+	private final static ShowLogType logMode =  ShowLogType.ShowLogResume;
+
+
+	public static ShowLogType getLogmode() {
+		return logMode;
 	}
 
 	public static int getCohete_tamanio_alto() {

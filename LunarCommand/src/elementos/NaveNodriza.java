@@ -32,13 +32,20 @@ public class NaveNodriza extends Movible {
 		misil.setVelocidad(Configuracion.getVelocidad_misil());
 		misil.setDanio(Configuracion.getDanio_misil());
 		misil.setTamanio(new Tamanio(Configuracion.getMisil_tamanio_ancho(), Configuracion.getMisil_tamanio_ancho()));
+		misil.setDireccion(getRandomDireccion());
 		this.escenario.addElemento(misil);
 		
-		System.out.println("Disparo Misil");
-
-		
+		if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.println("Disparo Misil");
 	}
 	
+	private int getRandomDireccion() {
+		return aleatorio(270,90) ;
+	}
+	
+	private static int aleatorio(int max,int min){
+		return (int)(Math.random()*(max-min))+min;		
+	}
+		
 	public void dispararCohete() {
 		Cohete cohete = new Cohete();
 		
@@ -46,9 +53,10 @@ public class NaveNodriza extends Movible {
 		cohete.avanzar();
 		cohete.setVelocidad(Configuracion.getVelocidad_cohete());
 		cohete.setTamanio(new Tamanio(Configuracion.getCohete_tamanio_ancho(), Configuracion.getCohete_tamanio_ancho()));
+		cohete.setDireccion(getRandomDireccion());
 		escenario.addElemento(cohete);
 		
-		System.out.println("Disparo Cohete");
+		if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.println("Disparo Cohete");
 	}
 	
 

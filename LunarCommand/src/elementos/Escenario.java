@@ -37,8 +37,9 @@ public class Escenario {
 	 */
 	private BaseLunar crearBaseLunar(int nroBase, int totalBases) {
 		
-		BaseLunar baselunar = new BaseLunar(getPosicionXBaseLunar(nroBase, totalBases), Configuracion.getEscenario_alto());
+		BaseLunar baselunar = new BaseLunar(this, getPosicionXBaseLunar(nroBase, totalBases), Configuracion.getEscenario_alto());
 		baselunar.setTamanio(new Tamanio(Configuracion.getBaseLunar_tamanio_alto(), Configuracion.getBaseLunar_tamanio_ancho()));
+		baselunar.setEscudo(100); //Escudo 100%
 		return baselunar;
 	}
 	
@@ -60,7 +61,7 @@ public class Escenario {
 	private BaseLunarArmada crearBaseLunarArmada() {
 		Posicion posicion = new Posicion();
 		BaseLunarArmada baselunararmada;
-		baselunararmada = new BaseLunarArmada();
+		baselunararmada = new BaseLunarArmada(this);
 		
 		posicion.setX(Configuracion.getEscenario_ancho()/2);
 		posicion.setY(Configuracion.getEscenario_alto());
@@ -70,6 +71,7 @@ public class Escenario {
 		
 		baselunararmada.setTamanio(new Tamanio(Configuracion.getBaseLunarArmada_tamanio_alto(), Configuracion.getBaseLunarArmada_tamanio_ancho()));
 
+		baselunararmada.setEscudo(100); //Escudo 100%
 		
 		return baselunararmada;
 	}
@@ -98,7 +100,7 @@ public class Escenario {
 		
 		//Pongo a jugar a los elementos
 		//while (true) {
-		for (i = 1; i <= 10; i++) {
+		for (i = 1; i <= 50; i++) {
 			for (Elemento e: elementos) {
 				e.jugar();
 			}
@@ -113,11 +115,11 @@ public class Escenario {
 						
 						if (e instanceof Misil) {
 							e.morir();
-							elementos.remove(e);
+							//elementos.remove(e); // Lo elimino despues en un bucle for
 						}
 						if (e instanceof Cohete) {
 							e.morir();
-							elementos.remove(e);
+							//elementos.remove(e); // Lo elimino despues en un bucle for
 						}
 					}
 				}
@@ -132,6 +134,15 @@ public class Escenario {
 							System.out.println("Elemento " + e1 + " choc— con " + e2);
 						}
 					}
+				}
+			}
+			
+			//Me fijo si alguno de los elementos muri— y los elimino del Array de objetos
+			for (Elemento e: elementos) {
+				if (!e.vivo()) {
+					if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogResume || Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug)
+						System.out.println("Elimino al elemento " + e + " del arreglo de objetos");
+					elementos.remove(e);
 				}
 			}
 			

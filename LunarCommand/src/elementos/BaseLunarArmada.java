@@ -1,9 +1,12 @@
 package elementos;
 
+import configuracion.Configuracion;
+
 public class BaseLunarArmada extends BaseLunar {
 	private int puntos;
 	private int cantidadBombas;
 	public Laser laser;
+	private Escenario escenario;
 	
 	public int getPuntos() {
 		return puntos;
@@ -21,13 +24,18 @@ public class BaseLunarArmada extends BaseLunar {
 		this.cantidadBombas = cantidadBombas;
 	}
 
-	public BaseLunarArmada() {
+	public BaseLunarArmada(Escenario escenario) {
 		// TODO Auto-generated constructor stub
-		super();
+		super(escenario);
+		this.escenario = escenario;
 		laser = new Laser();
 	}
 
 	public void dispararBomba() {
+		Bomba bomba = new Bomba();
+		bomba.setTamanio(new Tamanio(Configuracion.getEscenario_ancho(), Configuracion.getEscenario_alto()));
+		
+		escenario.addElemento(bomba);
 		
 	}
 	

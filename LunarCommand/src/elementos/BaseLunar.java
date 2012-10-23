@@ -2,14 +2,15 @@ package elementos;
 
 public class BaseLunar extends Elemento {
 	private int escudo;
+	private Escenario escenario;
 	
-	public BaseLunar() {
+	public BaseLunar(Escenario escenario) {
 		// TODO Auto-generated constructor stub
 		super();
 	}
 	
-	public BaseLunar(int x, int y) {
-		this();
+	public BaseLunar(Escenario escenario, int x, int y) {
+		this(escenario);
 		setPosicion(new Posicion(x, y));
 	}
 
