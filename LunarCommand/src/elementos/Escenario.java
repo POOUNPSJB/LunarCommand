@@ -128,12 +128,20 @@ public class Escenario {
 			//Me fijo si alguno de los elementos choc— con otro
 			
 			for (Elemento e1: elementos) {
-				for (Elemento e2: elementos) {
-					if ((e1 != e2) && (e2 instanceof Movible)) { //Me fijo que un elemento no controle choque consigo mismo y solo con objetos movibles
-						if (e1.chocar(e2)) {
-							System.out.println("Elemento " + e1 + " choc— con " + e2);
-						}
-					}
+//				for (Elemento e2: elementos) {
+//					if ((e1 != e2) && (e2 instanceof Movible)) { //Me fijo que un elemento no controle choque consigo mismo y solo con objetos movibles
+//						if (e1.chocar(e2)) {
+//							System.out.println("Elemento " + e1 + " choc— con " + e2);
+//							if (e1 instanceof Cohete) {
+//								Cohete cohete;
+//									cohete = (Cohete) e1;
+//									
+//							}
+//						}
+//					}
+//				}
+				if (e1 instanceof Arma) {
+					//Laser, misil o cohete
 				}
 			}
 			

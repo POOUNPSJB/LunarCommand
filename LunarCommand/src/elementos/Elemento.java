@@ -18,7 +18,7 @@ public abstract class Elemento {
 	public Elemento() {
 		// TODO Auto-generated constructor stub
 		this.vivo = true;
-		this.id = ++contador;
+		this.setId(++contador);
 	}
 
 	public void jugar() {
@@ -35,7 +35,7 @@ public abstract class Elemento {
 		return id;
 	}
 
-	public void setId(int id) {
+	private void setId(int id) {
 		this.id = id;
 	}
 

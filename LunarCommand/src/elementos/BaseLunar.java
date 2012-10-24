@@ -1,5 +1,7 @@
 package elementos;
 
+import configuracion.Configuracion;
+
 public class BaseLunar extends Elemento {
 	private int escudo;
 	private Escenario escenario;
@@ -20,6 +22,11 @@ public class BaseLunar extends Elemento {
 
 	public void setEscudo(int escudo) {
 		this.escudo = escudo;
+	}
+	
+	public void romperEscudo(int danio) {
+		this.setEscudo(this.getEscudo() - danio);
+		System.out.println(this + " Escudo: " + this.getEscudo());
 	}
 
 	/**
