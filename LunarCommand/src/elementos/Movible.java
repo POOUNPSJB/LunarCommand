@@ -59,7 +59,7 @@ public abstract class Movible extends Elemento {
 
 	
 	public void chocarPared() {
-		System.out.println("Elemento " + this.getClass() + " chocarPared");
+		if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.println("Elemento " + this.getClass() + " chocarPared");
 	}
 	/**
 	 * @param args

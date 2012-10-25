@@ -6,6 +6,21 @@ public class BaseLunar extends Elemento {
 	private int escudo;
 	private Escenario escenario;
 	
+	@Override
+	public void chocar(Elemento otro) {
+		// TODO Auto-generated method stub
+		if (otro instanceof Misil) {
+			System.out.println(this + " choc— con " + otro);
+			decrementarEscudo(((Misil) otro).getDanio());
+		}
+	}
+	
+	public void decrementarEscudo(int danio) {
+		this.setEscudo(this.getEscudo() - danio);
+		if (this.getEscudo() <= 0) 
+			this.morir();
+	}
+
 	public BaseLunar(Escenario escenario) {
 		// TODO Auto-generated constructor stub
 		super();
@@ -27,6 +42,23 @@ public class BaseLunar extends Elemento {
 	public void romperEscudo(int danio) {
 		this.setEscudo(this.getEscudo() - danio);
 		System.out.println(this + " Escudo: " + this.getEscudo());
+	}
+	
+	
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString() + " Escudo: " + this.getEscudo();
+	}
+	
+	
+
+	@Override
+	public void morir() {
+		// TODO Auto-generated method stub
+		super.morir();
+		System.out.println("Destruyeron la Base Lunar " + this);
 	}
 
 	/**

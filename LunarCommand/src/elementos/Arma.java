@@ -11,6 +11,15 @@ public class Arma extends Movible {
 	
 	
 
+	@Override
+	public void chocarPared() {
+		// TODO Auto-generated method stub
+		super.chocarPared();
+		this.morir();
+	}
+
+
+
 	public Posicion getPosicionInicial() {
 		return posicionInicial;
 	}

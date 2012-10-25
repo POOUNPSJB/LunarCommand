@@ -28,7 +28,7 @@ public class BaseLunarArmada extends BaseLunar {
 		// TODO Auto-generated constructor stub
 		super(escenario);
 		this.escenario = escenario;
-		laser = new Laser();
+		laser = new Laser(escenario);
 	}
 
 	public void dispararBomba() {
@@ -43,6 +43,16 @@ public class BaseLunarArmada extends BaseLunar {
 		
 	}
 	
+	
+	
+	@Override
+	public void morir() {
+		// TODO Auto-generated method stub
+		super.morir();
+		System.out.println("FIN DEL JUEGO - Destruyeron la Base Lunar Armada " + this);
+		escenario.finalizar();
+	}
+
 	/**
 	 * @param args
 	 */

@@ -1,11 +1,14 @@
 package elementos;
 
+import java.awt.Rectangle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import configuracion.Configuracion;
 
 public class Escenario {
 	private CopyOnWriteArrayList <Elemento> elementos;
+	boolean jugando = false;
+	private int puntaje;
 	
 	public Escenario() {
 		// TODO Auto-generated constructor stub
@@ -76,6 +79,20 @@ public class Escenario {
 		return baselunararmada;
 	}
 	
+	/*
+	 * Devuelve true si el elemento e1 colisiona con el Elemento e2 y false si no lo hace
+	 */
+	private boolean colisionar (Elemento e1, Elemento e2) {
+	 	if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.printf("Rutina chocar elemento " + e1.getClass() + " (%d,%d,%d,%d) con elemento " + e2.getClass() + " (%d,%d,%d,%d) \n", e1.getPosicion().getX(), e1.getPosicion().getY(), e1.getTamanio().getAncho(), e1.getTamanio().getAlto(), e2.getPosicion().getX(), e2.getPosicion().getY(), e2.getTamanio().getAncho(), e2.getTamanio().getAlto());
+		Rectangle esteRectangulo = new Rectangle(e1.getPosicion().getX(), e1.getPosicion().getY(), e1.getTamanio().getAncho(), e1.getTamanio().getAlto());
+		Rectangle otroRectangulo = new Rectangle(e2.getPosicion().getX(), e2.getPosicion().getY(), e2.getTamanio().getAncho(), e2.getTamanio().getAlto());
+		
+		return esteRectangulo.intersects(otroRectangulo);
+	}
+	
+	public void sumarPuntaje(int puntaje) {
+		this.puntaje += puntaje;
+	}
 	private boolean posicionValida(Posicion posicion) {
 		return !(posicion.getX() >= Configuracion.getEscenario_ancho() || posicion.getY() > Configuracion.getEscenario_alto() || posicion.getX() <= 0 || posicion.getY() < 0);
 	}
@@ -85,13 +102,15 @@ public class Escenario {
 	}
 	public void iniciar() {
 		
+		this.puntaje = 0;
+		this.jugando = true;
 		//Creo los objetos
 		System.out.println("Inicio del Juego");
 		//Agrego Base Lunar Armada
 		this.addElemento(crearBaseLunarArmada());
 
 		//Agrego las otras Bases Lunares
-		int i;
+		int i, j, k;
 		for (i=1; i<=Configuracion.getCantidad_baseslunares(); i++)
 			this.addElemento(crearBaseLunar(i, Configuracion.getCantidad_baseslunares()));
 		
@@ -100,7 +119,10 @@ public class Escenario {
 		
 		//Pongo a jugar a los elementos
 		//while (true) {
-		for (i = 1; i <= 50; i++) {
+		for (i = 1; i <= 1000; i++) {
+			if (!jugando)
+				break;
+			
 			for (Elemento e: elementos) {
 				e.jugar();
 			}
@@ -112,7 +134,7 @@ public class Escenario {
 				if (e instanceof Movible) {
 					if (! posicionValida(e.getPosicion())) {
 						((Movible) e).chocarPared();
-						
+						//POner logica en cada clase dentro del chocar pared
 						if (e instanceof Misil) {
 							e.morir();
 							//elementos.remove(e); // Lo elimino despues en un bucle for
@@ -127,7 +149,17 @@ public class Escenario {
 			
 			//Me fijo si alguno de los elementos choc— con otro
 			
-			for (Elemento e1: elementos) {
+			for (j=0; j<= elementos.size()-1; j++) {
+				for (k=j+1; k< elementos.size(); k++) {
+					if (colisionar(elementos.get(j), elementos.get(k))) {
+						if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.println("Elemento " + elementos.get(j) + " choc— con " + elementos.get(k));
+						elementos.get(j).chocar(elementos.get(k));
+						elementos.get(k).chocar(elementos.get(j));
+					}
+					
+				}
+			}
+
 //				for (Elemento e2: elementos) {
 //					if ((e1 != e2) && (e2 instanceof Movible)) { //Me fijo que un elemento no controle choque consigo mismo y solo con objetos movibles
 //						if (e1.chocar(e2)) {
@@ -140,15 +172,11 @@ public class Escenario {
 //						}
 //					}
 //				}
-				if (e1 instanceof Arma) {
-					//Laser, misil o cohete
-				}
-			}
 			
 			//Me fijo si alguno de los elementos muri— y los elimino del Array de objetos
 			for (Elemento e: elementos) {
 				if (!e.vivo()) {
-					if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogResume || Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug)
+					if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug)
 						System.out.println("Elimino al elemento " + e + " del arreglo de objetos");
 					elementos.remove(e);
 				}
@@ -159,7 +187,8 @@ public class Escenario {
 	}
 	
 	public void finalizar() {
-		
+		jugando = false;
+		System.out.println("PUNTAJE TOTAL DEL JUEGO: " + this.puntaje); 
 	}
 	
 	public void pausar() {

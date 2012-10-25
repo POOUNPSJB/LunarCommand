@@ -15,14 +15,51 @@ public class Configuracion {
 	private final static int baseLunarArmada_tamanio_ancho = 10;
 	private final static int naveNodriza_tamanio_alto = 10;
 	private final static int naveNodriza_tamanio_ancho = 50;
-	private final static int misil_danio = 5;
+	private final static int misil_puntos = 50;
+	private final static int misil_danio = 10;
 	private final static int misil_velocidad = 6;
 	private final static int misil_tamanio_alto = 5;
 	private final static int misil_tamanio_ancho = 5;
 	private final static int cohete_velocidad = 8;
+	private final static int cohete_turnosDisparoMisil = 4;
+	private final static int cohete_CantidadDisparoMisil = 2;
 	private final static int cohete_tamanio_alto = 5;
 	private final static int cohete_tamanio_ancho = 5;
+	private final static int ovni_tiempoDeVida = 10;
+	private final static int ovni_puntos = 100;
+	private final static int ovni_tamanio_alto = 5;
+	private final static int ovni_tamanio_ancho = 5;
+	private final static int ovni_velocidad = 5;
 	
+	
+	
+	public static int getOvniVelocidad() {
+		return ovni_velocidad;
+	}
+
+	public static int getOvniTamanioAlto() {
+		return ovni_tamanio_alto;
+	}
+
+	public static int getOvniTamanioAncho() {
+		return ovni_tamanio_ancho;
+	}
+
+	public static int getOvniTiempodevida() {
+		return ovni_tiempoDeVida;
+	}
+
+	public static int getOvniPuntos() {
+		return ovni_puntos;
+	}
+
+	public static int getCoheteTurnosdisparomisil() {
+		return cohete_turnosDisparoMisil;
+	}
+
+	public static int getCoheteCantidaddisparomisil() {
+		return cohete_CantidadDisparoMisil;
+	}
 	
 	public enum ShowLogType {ShowLogDebug, ShowLogResume, ShowLogNone};
 	
@@ -39,6 +76,12 @@ public class Configuracion {
 
 	public static int getCohete_tamanio_ancho() {
 		return cohete_tamanio_ancho;
+	}
+	
+	
+
+	public static int getMisilPuntos() {
+		return misil_puntos;
 	}
 
 	public static int getMisil_tamanio_alto() {

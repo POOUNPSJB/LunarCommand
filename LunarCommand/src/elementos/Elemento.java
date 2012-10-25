@@ -26,7 +26,7 @@ public abstract class Elemento {
 	}
 	
 	public void morir() {
-		System.out.println("Muere el objeto " + this);
+		if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.println("Muere el objeto " + this);
 		this.vivo = false;
 	}
 	
@@ -59,15 +59,9 @@ public abstract class Elemento {
 		this.tamanio = tamanio;
 	}
 
-	/*
-	 * Devuelve true si el elemento this choca con el Elemento otro y false si no lo hace
-	 */
-	public boolean chocar(Elemento otro) {
-	 	if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.printf("Rutina chocar elemento " + this.getClass() + " (%d,%d,%d,%d) con elemento " + otro.getClass() + " (%d,%d,%d,%d) \n", this.getPosicion().getX(), this.getPosicion().getY(), this.getTamanio().getAncho(), this.getTamanio().getAlto(), otro.getPosicion().getX(), otro.getPosicion().getY(), otro.getTamanio().getAncho(), otro.getTamanio().getAlto());
-		Rectangle esteRectangulo = new Rectangle(this.getPosicion().getX(), this.getPosicion().getY(), this.getTamanio().getAncho(), this.getTamanio().getAlto());
-		Rectangle otroRectangulo = new Rectangle(otro.getPosicion().getX(), otro.getPosicion().getY(), otro.getTamanio().getAncho(), otro.getTamanio().getAlto());
-		
-		return esteRectangulo.intersects(otroRectangulo);
+
+	public void chocar(Elemento otro) {
+
 	}
 	
 	public String toString() {

@@ -5,6 +5,7 @@ import configuracion.Configuracion;
 public class NaveNodriza extends Movible {
 	private int frecuenciaDisparoCohete = 7;
 	private int frecuenciaDisparoMisil = 5;
+	private int frecuenciaDisparoOvni = 10;
 	private int turnoActual = 0;
 	private Escenario escenario;
 	
@@ -16,7 +17,9 @@ public class NaveNodriza extends Movible {
 		if ((turnoActual % frecuenciaDisparoCohete) == 0)
 			this.dispararCohete();
 		if ((turnoActual % frecuenciaDisparoMisil) == 0)
-			this.dispararMisil();	
+			this.dispararMisil();
+		if ((turnoActual % frecuenciaDisparoOvni) == 0)
+			this.dispararOvni();
 	}
 	
 	public NaveNodriza(Escenario escenario) {
@@ -25,17 +28,30 @@ public class NaveNodriza extends Movible {
 	}
 
 	public void dispararMisil() {
-		Misil misil = new Misil();
+		Misil misil = new Misil(this.escenario);
 		
 		misil.setPosicion(this.getPosicion());
-		misil.avanzar();
 		misil.setVelocidad(Configuracion.getVelocidad_misil());
 		misil.setDanio(Configuracion.getDanio_misil());
 		misil.setTamanio(new Tamanio(Configuracion.getMisil_tamanio_ancho(), Configuracion.getMisil_tamanio_ancho()));
 		misil.setDireccion(getRandomDireccion());
+		misil.avanzar();
 		this.escenario.addElemento(misil);
 		
 		if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.println("Disparo Misil");
+	}
+	
+	public void dispararOvni() {
+		Ovni ovni = new Ovni();
+		
+		ovni.setPosicion(this.getPosicion());
+		ovni.setVelocidad(Configuracion.getOvniVelocidad());
+		ovni.setTamanio(new Tamanio(Configuracion.getOvniTamanioAlto(), Configuracion.getOvniTamanioAncho()));
+		ovni.setDireccion(getRandomDireccion());
+		ovni.avanzar();
+		this.escenario.addElemento(ovni);
+		
+		if (Configuracion.getLogmode() == Configuracion.ShowLogType.ShowLogDebug) System.out.println("Disparo Ovni");
 	}
 	
 	private int getRandomDireccion() {
@@ -47,7 +63,7 @@ public class NaveNodriza extends Movible {
 	}
 		
 	public void dispararCohete() {
-		Cohete cohete = new Cohete();
+		Cohete cohete = new Cohete(this.escenario);
 		
 		cohete.setPosicion(this.getPosicion());
 		cohete.avanzar();
